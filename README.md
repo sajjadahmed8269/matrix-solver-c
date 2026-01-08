@@ -13,7 +13,7 @@ To use this solver, clone the repository and compile using `make`:
 
 ```bash
 # Clone the repository
-git clone [https://github.com/your-username/matrix-solver-c.git](https://github.com/your-username/matrix-solver-c.git)
+git clone [https://github.com/sajjadahmed8269/matrix-solver-c.git](https://github.com/sajjadahmed8269/matrix-solver-c.git)
 
 # Enter the directory
 cd matrix-solver-c
