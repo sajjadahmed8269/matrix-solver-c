@@ -14,3 +14,13 @@ Matrix create_matrix(int n)
     }
     return m;
 }
+
+// Free a matrix of size n x n
+void free_matrix(Matrix m, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        free(m.data[i]);
+    }
+    free(m.data);
+}
