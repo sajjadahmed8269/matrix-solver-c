@@ -12,7 +12,7 @@ typedef struct
 
 // Memory Management
 Matrix create_matrix(int n);
-void free_matrix(Matrix m);
+void free_matrix(Matrix m, int n);
 
 // Math Operations
 double calculate_determinant(Matrix *m);
