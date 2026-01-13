@@ -16,9 +16,9 @@ Matrix create_matrix(int n)
 }
 
 // Free a matrix of size n x n
-void free_matrix(Matrix m, int n)
+void free_matrix(Matrix m)
 {
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < m.size; i++)
     {
         free(m.data[i]);
     }
