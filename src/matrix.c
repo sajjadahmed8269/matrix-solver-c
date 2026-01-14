@@ -24,3 +24,15 @@ void free_matrix(Matrix m)
     }
     free(m.data);
 }
+
+// Calculate the determinant of a matrix
+double calculate_determinant(Matrix *m)
+{
+    switch (m->size)
+    {
+    case 1:
+        return m->data[0][0];
+    default:
+        printf("The value of n is not in the range [1, 4].\n");
+    }
+}
