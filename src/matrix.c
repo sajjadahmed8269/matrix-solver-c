@@ -28,13 +28,12 @@ void free_matrix(Matrix m)
 // Calculate the determinant of a matrix
 double calculate_determinant(Matrix *m)
 {
-    switch (m->size)
+    if (m->size == 1)
     {
-    case 1:
         return m->data[0][0];
-    case 2:
+    }
+    else if (m->size == 2)
+    {
         return (m->data[0][0] * m->data[1][1]) - (m->data[0][1] * m->data[1][0]);
-    default:
-        printf("The value of n is not in the range [1, 4].\n");
     }
 }
