@@ -65,5 +65,6 @@ double calculate_determinant(Matrix *m)
             // free sub matrix
             free_matrix(sub);
         }
+        return det;
     }
 }
