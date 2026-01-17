@@ -14,5 +14,26 @@ int main(void)
     printf("\nThis tool solves NxN systems using Gauss elimination method.");
     printf("\n------------------------------------------------------------\n\n");
 
+    // Dimension input & Logic check for n
+    int n;
+    do
+    {
+        printf("Enter the dimension (n) for the n x n system of equations (e.g., 3 for a 3x3 matrix): ");
+        if (scanf("%d", &n) != 1)
+        {
+            printf("Invalid Input: Please enter a valid number (1 or greater).\n\n");
+            while (getchar() != '\n')
+                ;
+        }
+        else if (n < 1)
+        {
+            printf("Invalid Dimension: Please enter a positive integer (1 or greater).\n\n");
+        }
+        else
+        {
+            break;
+        }
+    } while (1);
+
     return 0;
 }
