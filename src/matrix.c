@@ -8,9 +8,27 @@ Matrix create_matrix(int n)
     Matrix m;
     m.size = n;
     m.data = (double **)malloc(n * sizeof(double *));
+    // Handle allocation failure
+    if (m.data == NULL)
+    {
+        m.size = 0;
+        return m;
+    }
     for (int i = 0; i < n; i++)
     {
         m.data[i] = (double *)malloc(n * sizeof(double));
+        // Handle allocation failure
+        if (m.data[i] == NULL)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                free(m.data[j]);
+            }
+            free(m.data);
+            m.size = 0;
+            m.data = NULL;
+            return m;
+        }
     }
     return m;
 }
