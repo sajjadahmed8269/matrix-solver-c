@@ -15,25 +15,23 @@ int main(void)
     printf("\n------------------------------------------------------------\n\n");
 
     // Dimension input & Logic check for n
+    char buffer[100];
     int n;
     do
     {
         printf("Enter the dimension (n) for the n x n system of equations (e.g., 3 for a 3x3 matrix): ");
-        if (scanf("%d", &n) != 1)
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL)
         {
-            printf("Invalid Input: Please enter a valid number (1 or greater).\n\n");
-            while (getchar() != '\n')
-                ;
+            if (sscanf(buffer, "%d", &n) == 1 && n >= 1)
+            {
+                break; // Valid Input
+            }
         }
-        else if (n < 1)
-        {
-            printf("Invalid Dimension: Please enter a positive integer (1 or greater).\n\n");
-        }
-        else
-        {
-            break;
-        }
+        printf("Invalid Input: Please enter a positive integer (1 or greater).\n\n");
+
     } while (1);
+
+    printf("%d\n", n);
 
     return 0;
 }
