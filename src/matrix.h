@@ -12,6 +12,7 @@ typedef struct
 
 // Memory Management
 Matrix create_matrix(int n);
+Matrix create_augmented_matrix(int n);
 void free_matrix(Matrix m);
 
 // Math Operations
