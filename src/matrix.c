@@ -117,3 +117,21 @@ double calculate_determinant(Matrix *m)
         return det;
     }
 }
+
+// Gauss Elimination Method
+// forward elimination for gauss elimination method
+void forward_elimination(Matrix *m)
+{
+    for (int j = 0; j < m->size - 1; j++)
+    {
+        // row under diagonal
+        for (int i = j + 1; i < m->size; i++)
+        {
+            double factor = m->data[i][j] / m->data[j][j];
+            for (int k = 0; k < m->size + 1; k++)
+            {
+                m->data[i][k] = factor * m->data[j][k];
+            }
+        }
+    }
+}

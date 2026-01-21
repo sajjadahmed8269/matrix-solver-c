@@ -19,4 +19,7 @@ void free_matrix(Matrix m);
 double calculate_determinant(Matrix *m);
 void solve_cramer(Matrix *A, double *B);
 
+// Gauss Elimination Methods
+void forward_elimination(Matrix *m);
+
 #endif
