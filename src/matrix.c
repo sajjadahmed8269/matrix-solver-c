@@ -124,7 +124,6 @@ void forward_elimination(Matrix *m)
 {
     for (int j = 0; j < m->size - 1; j++)
     {
-        // row under diagonal
         for (int i = j + 1; i < m->size; i++)
         {
             double factor = m->data[i][j] / m->data[j][j];
@@ -134,4 +133,30 @@ void forward_elimination(Matrix *m)
             }
         }
     }
+}
+
+// Back substitution
+double *back_substitution(Matrix m)
+{
+    int n = m.size;
+    double *answers = (double *)calloc(n, sizeof(double));
+    for (int i = n - 1; i >= 0; i--)
+    {
+        // base case
+        if (i == n - 1)
+        {
+            answers[i] = m.data[i][i] / m.data[i][n];
+        }
+        else
+        {
+            double sum = 0;
+            for (int j = i + 1; j < n; j++)
+            {
+                sum += m.data[i][j] * answers[j];
+            }
+            double b = m.data[i][n] - sum;
+            answers[i] = b / m.data[i][i];
+        }
+    }
+    return answers;
 }
