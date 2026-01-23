@@ -124,6 +124,26 @@ void forward_elimination(Matrix *m)
 {
     for (int j = 0; j < m->size - 1; j++)
     {
+        // Partial Pivoting
+        int max_row = j;
+        for (int i = j + 1; i < m->size; i++)
+        {
+            if (m->data[i][j] > m->data[max_row][j])
+            {
+                max_row = i;
+            }
+        }
+        // Swap rows
+        if (max_row != j)
+        {
+            for (int k = 0; k < m->size + 1; k++)
+            {
+                double temp = m->data[j][k];
+                m->data[j][k] = m->data[max_row][k];
+                m->data[max_row][k] = temp;
+            }
+        }
+        // Elimination process
         for (int i = j + 1; i < m->size; i++)
         {
             double factor = m->data[i][j] / m->data[j][j];
