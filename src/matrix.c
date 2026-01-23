@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include "matrix.h"
 
+// Define constant terms
+#define NO_SOLUTION 0
+#define UNIQUE_SOLUTION 1
+#define INFINITE_SOLUTIONS 2
+
 // Create a matrix of size n x n
 Matrix create_matrix(int n)
 {
@@ -160,6 +165,42 @@ bool forward_elimination(Matrix *m)
         }
     }
     return true;
+}
+
+// check for edge cases in augmented matrix reduced to echelon form
+int check_solutions(Matrix m)
+{
+    bool has_dependent_equation = false;
+    for (int i = 0; i < m.size; i++)
+    {
+        bool all_zeros = true;
+        for (int j = 0; j < m.size; j++)
+        {
+            if (fabs(m.data[i][j]) > 1e-12)
+            {
+                all_zeros = false;
+            }
+        }
+
+        if (all_zeros)
+        {
+            if (fabs(m.data[i][m.size]) > 1e-12)
+            {
+                return NO_SOLUTION;
+            }
+            else
+            {
+                has_dependent_equation = true;
+            }
+        }
+    }
+
+    if (has_dependent_equation)
+    {
+        return INFINITE_SOLUTIONS;
+    }
+
+    return UNIQUE_SOLUTION;
 }
 
 // Back substitution

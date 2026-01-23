@@ -20,6 +20,7 @@ double calculate_determinant(Matrix *m);
 
 // Gauss Elimination Methods
 bool forward_elimination(Matrix *m);
+int check_solutions(Matrix m);
 double *back_substitution(Matrix m);
 
 #endif
