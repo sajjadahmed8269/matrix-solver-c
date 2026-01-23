@@ -10,6 +10,11 @@ typedef struct
     double **data;
 } Matrix;
 
+// Define constant terms
+#define NO_SOLUTION 0
+#define UNIQUE_SOLUTION 1
+#define INFINITE_SOLUTIONS 2
+
 // Memory Management
 Matrix create_matrix(int n);
 Matrix create_augmented_matrix(int n);
