@@ -3,11 +3,6 @@
 #include <stdlib.h>
 #include "matrix.h"
 
-// Define constant terms
-#define NO_SOLUTION 0
-#define UNIQUE_SOLUTION 1
-#define INFINITE_SOLUTIONS 2
-
 // Create a matrix of size n x n
 Matrix create_matrix(int n)
 {
@@ -134,7 +129,7 @@ bool forward_elimination(Matrix *m)
         int max_row = j;
         for (int i = j + 1; i < m->size; i++)
         {
-            if (m->data[i][j] > m->data[max_row][j])
+            if (fabs(m->data[i][j]) > fabs(m->data[max_row][j]))
             {
                 max_row = i;
             }
@@ -157,10 +152,14 @@ bool forward_elimination(Matrix *m)
         // Elimination process
         for (int i = j + 1; i < m->size; i++)
         {
-            double factor = m->data[i][j] / m->data[j][j];
-            for (int k = 0; k < m->size + 1; k++)
+            if (m->data[i][j] < 1e-12 && m->data[i][j] > -1e-12)
             {
-                m->data[i][k] = factor * m->data[j][k];
+                continue; // already zero
+            }
+            double factor = m->data[i][j] / m->data[j][j];
+            for (int k = j; k < m->size + 1; k++)
+            {
+                m->data[i][k] = m->data[i][k] - factor * m->data[j][k];
             }
         }
     }
@@ -213,7 +212,7 @@ double *back_substitution(Matrix m)
         // base case
         if (i == n - 1)
         {
-            answers[i] = m.data[i][i] / m.data[i][n];
+            answers[i] = m.data[i][n] / m.data[i][i];
         }
         else
         {
