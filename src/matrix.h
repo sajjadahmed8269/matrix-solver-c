@@ -19,7 +19,7 @@ void free_matrix(Matrix m);
 double calculate_determinant(Matrix *m);
 
 // Gauss Elimination Methods
-void forward_elimination(Matrix *m);
+bool forward_elimination(Matrix *m);
 double *back_substitution(Matrix m);
 
 #endif

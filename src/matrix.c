@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "matrix.h"
@@ -120,7 +121,7 @@ double calculate_determinant(Matrix *m)
 
 // Gauss Elimination Method
 // forward elimination for gauss elimination method
-void forward_elimination(Matrix *m)
+bool forward_elimination(Matrix *m)
 {
     for (int j = 0; j < m->size - 1; j++)
     {
@@ -132,6 +133,11 @@ void forward_elimination(Matrix *m)
             {
                 max_row = i;
             }
+        }
+        // Edge Case: check for singular matrix
+        if (fabs(m->data[max_row][j]) < 1e-12)
+        {
+            return false; // Singular matrix
         }
         // Swap rows
         if (max_row != j)
@@ -153,6 +159,7 @@ void forward_elimination(Matrix *m)
             }
         }
     }
+    return true;
 }
 
 // Back substitution
