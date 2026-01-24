@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "matrix.h"
 
 int main(void)
@@ -28,6 +29,26 @@ int main(void)
             }
         }
         printf("Invalid Input: Please enter a positive integer (1 or greater).\n\n");
+
+    } while (1);
+
+    // Check which operation to perform by the user
+    printf("Select an operation:\n");
+    printf("1. Solve system of equations\n");
+    printf("2. Calculate determinant\n");
+
+    int choice;
+    do
+    {
+        printf("Enter your choice (1-2): ");
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL)
+        {
+            if (sscanf(buffer, "%d", &choice) == 1 && choice >= 1 && choice <= 2)
+            {
+                break; // Valid Input
+            }
+        }
+        printf("Invalid Input: Please enter a number between 1 and 2.\n\n");
 
     } while (1);
 
