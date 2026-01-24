@@ -9,6 +9,16 @@
 #endif
 #endif
 
+#ifdef _WIN32
+#define SYMBOL_SUCCESS "[PASS]"
+#define SYMBOL_FAILURE "[FAIL]"
+#define SYMBOL_WARN "[WARNING]"
+#else
+#define SYMBOL_SUCCESS "✓"
+#define SYMBOL_FAILURE "❌"
+#define SYMBOL_WARN "⚠"
+#endif
+
 // ANSI Color codes
 #define COLOR_GREEN "\033[0;32m"
 #define COLOR_RED "\033[0;31m"
@@ -65,11 +75,11 @@ int main(void)
                 break; // Valid Input
             }
         }
-        printf(COLOR_RED "❌ Invalid Input: Please enter a positive integer between 1 and 100.\n" COLOR_RESET);
+        printf(COLOR_RED "%s Invalid Input: Please enter a positive integer between 1 and 100.\n" COLOR_RESET, SYMBOL_FAILURE);
 
     } while (1);
 
-    printf(COLOR_GREEN "✓ Matrix dimension set to: %dx%d\n\n" COLOR_RESET, n, n);
+    printf(COLOR_GREEN "%s Matrix dimension set to: %dx%d\n\n" COLOR_RESET, SYMBOL_SUCCESS, n, n);
 
     // Check which operation to perform by the user
     printf(COLOR_BOLD COLOR_BLUE "Select an operation:\n" COLOR_RESET);
@@ -87,7 +97,7 @@ int main(void)
                 break; // Valid Input
             }
         }
-        printf(COLOR_RED "❌ Invalid Input: Please enter 1 or 2.\n" COLOR_RESET);
+        printf(COLOR_RED "%s Invalid Input: Please enter 1 or 2.\n" COLOR_RESET, SYMBOL_FAILURE);
 
     } while (1);
 
@@ -102,7 +112,7 @@ int main(void)
         Matrix m = create_augmented_matrix(n);
         if (m.size == 0)
         {
-            printf(COLOR_RED "❌ Memory allocation failed. Exiting.\n" COLOR_RESET);
+            printf(COLOR_RED "%s Memory allocation failed. Exiting.\n" COLOR_RESET, SYMBOL_FAILURE);
             return 1;
         }
 
@@ -129,7 +139,7 @@ int main(void)
         printf(COLOR_YELLOW "\nProcessing with Gaussian Elimination...\n" COLOR_RESET);
         if (!forward_elimination(&m))
         {
-            printf(COLOR_RED "\n❌ SINGULAR MATRIX DETECTED\n" COLOR_RESET);
+            printf(COLOR_RED "\n%s SINGULAR MATRIX DETECTED\n" COLOR_RESET, SYMBOL_FAILURE);
             printf(COLOR_RED "   The system has no unique solution.\n" COLOR_RESET);
             printf(COLOR_RED "   (The coefficient matrix is singular/non-invertible)\n" COLOR_RESET);
             free_matrix(m);
@@ -142,20 +152,20 @@ int main(void)
         switch (solution_type)
         {
         case INFINITE_SOLUTIONS:
-            printf(COLOR_YELLOW "⚠ INFINITE SOLUTIONS\n" COLOR_RESET);
+            printf(COLOR_YELLOW "%s INFINITE SOLUTIONS\n" COLOR_RESET, SYMBOL_WARN);
             printf(COLOR_YELLOW "The system has infinitely many solutions.\n" COLOR_RESET);
             printf(COLOR_YELLOW "(The system has dependent equations)\n" COLOR_RESET);
             free_matrix(m);
             return 1;
         case NO_SOLUTION:
-            printf(COLOR_RED "❌ NO SOLUTION EXISTS\n" COLOR_RESET);
+            printf(COLOR_RED "%s NO SOLUTION EXISTS\n" COLOR_RESET, SYMBOL_FAILURE);
             printf(COLOR_RED "The system is inconsistent.\n" COLOR_RESET);
             printf(COLOR_RED "(Contradictory equations detected)\n" COLOR_RESET);
             free_matrix(m);
             return 1;
         case UNIQUE_SOLUTION:
             double *answers = back_substitution(m);
-            printf(COLOR_GREEN COLOR_BOLD "✓ UNIQUE SOLUTION FOUND\n" COLOR_RESET);
+            printf(COLOR_GREEN COLOR_BOLD "%s UNIQUE SOLUTION FOUND\n" COLOR_RESET, SYMBOL_SUCCESS);
             printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
             for (int i = 0; i < n; i++)
             {
@@ -179,7 +189,7 @@ int main(void)
         Matrix m = create_matrix(n);
         if (m.size == 0)
         {
-            printf(COLOR_RED "❌ Memory allocation failed. Exiting.\n" COLOR_RESET);
+            printf(COLOR_RED "%s Memory allocation failed. Exiting.\n" COLOR_RESET, SYMBOL_FAILURE);
             return 1;
         }
 
@@ -200,17 +210,17 @@ int main(void)
         double det = calculate_determinant(&m);
 
         printf("\n" COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
-        printf(COLOR_GREEN COLOR_BOLD "✓ DETERMINANT CALCULATED\n" COLOR_RESET);
+        printf(COLOR_GREEN COLOR_BOLD "%s DETERMINANT CALCULATED\n" COLOR_RESET, SYMBOL_SUCCESS);
         printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
         printf(COLOR_GREEN "  det(A) = %.5lf\n" COLOR_RESET, det);
 
         if (det == 0.0)
         {
-            printf(COLOR_YELLOW "  ⚠ Matrix is singular (non-invertible)\n" COLOR_RESET);
+            printf(COLOR_YELLOW "  %s Matrix is singular (non-invertible)\n" COLOR_RESET, SYMBOL_WARN);
         }
         else
         {
-            printf(COLOR_GREEN "  ✓ Matrix is non-singular (invertible)\n" COLOR_RESET);
+            printf(COLOR_GREEN "  %s Matrix is non-singular (invertible)\n" COLOR_RESET, SYMBOL_SUCCESS);
         }
         printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
 
