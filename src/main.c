@@ -53,9 +53,9 @@ int main(void)
     } while (1);
 
     // Perform the chosen operation
+    // solve system of equations
     if (choice == 1)
     {
-        // Solve system of equations
         printf("\nSolving system of equations...\n");
         Matrix m = create_augmented_matrix(n);
         if (m.size == 0)
@@ -113,6 +113,34 @@ int main(void)
             break;
         }
 
+        return 0;
+    }
+
+    // calulate determinant
+    else if (choice == 2)
+    {
+        printf("\nCalculating determinant...\n");
+        Matrix m = create_matrix(n);
+        if (m.size == 0)
+        {
+            printf("Memory allocation failed. Exiting.\n");
+            return 1;
+        }
+
+        // Take matrix input from user
+        printf("Enter the Matrix A row by row:\n");
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                printf("Enter the value of a%d%d: ", i + 1, j + 1);
+                scanf("%lf", &m.data[i][j]);
+            }
+        }
+
+        double det = calculate_determinant(&m);
+        printf("\nThe determinant of the matrix is: %.6lf\n", det);
+        free_matrix(m);
         return 0;
     }
 }
