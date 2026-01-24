@@ -178,8 +178,6 @@ int main(void)
             break;
         }
         }
-
-        return 0;
     }
     else if (choice == 2)
     {
@@ -227,8 +225,14 @@ int main(void)
         printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
 
         free_matrix(m);
-        return 0;
     }
+
+#ifdef _WIN32
+    printf("\n\033[1;32mDone!\033[0m Press Enter to close this window...");
+    while (getchar() != '\n')
+        ;      // Clear any leftover newline
+    getchar(); // Wait for the actual Enter press
+#endif
 
     return 0;
 }
