@@ -2,45 +2,56 @@
 #include <stdlib.h>
 #include "matrix.h"
 
+// ANSI Color codes
+#define COLOR_GREEN "\033[0;32m"
+#define COLOR_RED "\033[0;31m"
+#define COLOR_YELLOW "\033[0;33m"
+#define COLOR_BLUE "\033[0;34m"
+#define COLOR_CYAN "\033[0;36m"
+#define COLOR_RESET "\033[0m"
+#define COLOR_BOLD "\033[1m"
+
 int main(void)
 {
     // Greetings & Description
-    printf("\033[0;32m");
-    printf(" __  __       _        _      ____       _                \n");
-    printf("|  \\/  | __ _| |_ _ __(_)_  _/ ___|  ___| |_   _____ _ __ \n");
-    printf("| |\\/| |/ _` | __| '__| \\ \\/ / \\___ \\ / _ \\ \\ \\ / / _ \\ '__|\n");
-    printf("| |  | | (_| | |_| |  | |>  <  ___) |  __/ |\\ V /  __/ |   \n");
-    printf("|_|  |_|\\__,_|\\__|_|  |_/_/\\_\\|____/ \\___|_| \\_/ \\___|_|   \n");
-    printf("\033[0m");
-    printf("\nThis tool solves NxN systems using Gauss elimination method.");
-    printf("\n------------------------------------------------------------\n\n");
+    printf(COLOR_GREEN COLOR_BOLD);
+    printf("\n ╔═══════════════════════════════════════════════════════╗\n");
+    printf(" ║                                                       ║\n");
+    printf(" ║                   MATRIX SOLVER                       ║\n");
+    printf(" ║                                                       ║\n");
+    printf(" ║      Solve NxN Systems of Linear Equations            ║\n");
+    printf(" ║                                                       ║\n");
+    printf(" ╚═══════════════════════════════════════════════════════╝\n");
+    printf(COLOR_RESET "\n");
 
     // Dimension input & Logic check for n
     char buffer[100];
     int n;
     do
     {
-        printf("Enter the dimension (n) for the n x n system of equations (e.g., 3 for a 3x3 matrix): ");
+        printf(COLOR_CYAN "Enter the dimension (n) for the n×n system: " COLOR_RESET);
         if (fgets(buffer, sizeof(buffer), stdin) != NULL)
         {
-            if (sscanf(buffer, "%d", &n) == 1 && n >= 1)
+            if (sscanf(buffer, "%d", &n) == 1 && n >= 1 && n <= 100)
             {
                 break; // Valid Input
             }
         }
-        printf("Invalid Input: Please enter a positive integer (1 or greater).\n\n");
+        printf(COLOR_RED "❌ Invalid Input: Please enter a positive integer between 1 and 100.\n" COLOR_RESET);
 
     } while (1);
 
+    printf(COLOR_GREEN "✓ Matrix dimension set to: %dx%d\n\n" COLOR_RESET, n, n);
+
     // Check which operation to perform by the user
-    printf("Select an operation:\n");
-    printf("1. Solve system of equations\n");
-    printf("2. Calculate determinant\n");
+    printf(COLOR_BOLD COLOR_BLUE "Select an operation:\n" COLOR_RESET);
+    printf("  " COLOR_CYAN "1" COLOR_RESET " - Solve system of linear equations\n");
+    printf("  " COLOR_CYAN "2" COLOR_RESET " - Calculate matrix determinant\n\n");
 
     int choice;
     do
     {
-        printf("Enter your choice (1-2): ");
+        printf(COLOR_CYAN "Enter your choice (1-2): " COLOR_RESET);
         if (fgets(buffer, sizeof(buffer), stdin) != NULL)
         {
             if (sscanf(buffer, "%d", &choice) == 1 && choice >= 1 && choice <= 2)
@@ -48,66 +59,81 @@ int main(void)
                 break; // Valid Input
             }
         }
-        printf("Invalid Input: Please enter a number between 1 and 2.\n\n");
+        printf(COLOR_RED "❌ Invalid Input: Please enter 1 or 2.\n" COLOR_RESET);
 
     } while (1);
 
     // Perform the chosen operation
-    // solve system of equations
     if (choice == 1)
     {
-        printf("\nSolving system of equations...\n");
+        // Solve system of equations
+        printf(COLOR_BOLD COLOR_BLUE "\n════════════════════════════════════════\n" COLOR_RESET);
+        printf(COLOR_BOLD COLOR_BLUE "      SOLVING SYSTEM OF EQUATIONS\n" COLOR_RESET);
+        printf(COLOR_BOLD COLOR_BLUE "════════════════════════════════════════\n\n" COLOR_RESET);
+
         Matrix m = create_augmented_matrix(n);
         if (m.size == 0)
         {
-            printf("Memory allocation failed. Exiting.\n");
+            printf(COLOR_RED "❌ Memory allocation failed. Exiting.\n" COLOR_RESET);
             return 1;
         }
 
         // Take matrix input from user
-        printf("Enter the Matrix A row by row:\n");
+        printf(COLOR_CYAN "Enter the Coefficient Matrix A row by row:\n" COLOR_RESET);
         for (int i = 0; i < n; i++)
         {
+            printf(COLOR_YELLOW "Row %d" COLOR_RESET ": \n", i + 1);
             for (int j = 0; j < n; j++)
             {
-                printf("Enter the value of a%d%d: ", i + 1, j + 1);
+                printf("a%d%d = ", i + 1, j + 1);
                 scanf("%lf", &m.data[i][j]);
             }
         }
-        printf("Enter the constants vector b:\n");
+
+        printf("\n" COLOR_CYAN "Enter the Constants Vector b:\n" COLOR_RESET);
         for (int i = 0; i < n; i++)
         {
-            printf("Enter the value of b%d: ", i + 1);
+            printf("b%d = ", i + 1);
             scanf("%lf", &m.data[i][n]);
         }
 
         // Perform Gauss elimination
+        printf(COLOR_YELLOW "\nProcessing with Gaussian Elimination...\n" COLOR_RESET);
         if (!forward_elimination(&m))
         {
-            printf("The system has no unique solution (singular matrix).\n");
+            printf(COLOR_RED "\n❌ SINGULAR MATRIX DETECTED\n" COLOR_RESET);
+            printf(COLOR_RED "   The system has no unique solution.\n" COLOR_RESET);
+            printf(COLOR_RED "   (The coefficient matrix is singular/non-invertible)\n" COLOR_RESET);
             free_matrix(m);
             return 1;
         }
 
         // check solution type
         int solution_type = check_solutions(m);
+        printf("\n");
         switch (solution_type)
         {
         case INFINITE_SOLUTIONS:
-            printf("The system has infinitely many solutions.\n");
+            printf(COLOR_YELLOW "⚠ INFINITE SOLUTIONS\n" COLOR_RESET);
+            printf(COLOR_YELLOW "The system has infinitely many solutions.\n" COLOR_RESET);
+            printf(COLOR_YELLOW "(The system has dependent equations)\n" COLOR_RESET);
             free_matrix(m);
             return 1;
         case NO_SOLUTION:
-            printf("The system has no solution.\n");
+            printf(COLOR_RED "❌ NO SOLUTION EXISTS\n" COLOR_RESET);
+            printf(COLOR_RED "The system is inconsistent.\n" COLOR_RESET);
+            printf(COLOR_RED "(Contradictory equations detected)\n" COLOR_RESET);
             free_matrix(m);
             return 1;
         case UNIQUE_SOLUTION:
             double *answers = back_substitution(m);
-            printf("\nThe unique solution is:\n");
+            printf(COLOR_GREEN COLOR_BOLD "✓ UNIQUE SOLUTION FOUND\n" COLOR_RESET);
+            printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
             for (int i = 0; i < n; i++)
             {
-                printf("x%d = %.6lf\n", i + 1, answers[i]);
+                printf(COLOR_GREEN "  x%-2d = %+.5lf\n" COLOR_RESET, i + 1, answers[i]);
             }
+            printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
             free(answers);
             free_matrix(m);
             break;
@@ -115,32 +141,54 @@ int main(void)
 
         return 0;
     }
-
-    // calulate determinant
     else if (choice == 2)
     {
-        printf("\nCalculating determinant...\n");
+        // Calculate determinant
+        printf(COLOR_BOLD COLOR_BLUE "\n════════════════════════════════════════\n" COLOR_RESET);
+        printf(COLOR_BOLD COLOR_BLUE "      CALCULATING MATRIX DETERMINANT\n" COLOR_RESET);
+        printf(COLOR_BOLD COLOR_BLUE "════════════════════════════════════════\n\n" COLOR_RESET);
+
         Matrix m = create_matrix(n);
         if (m.size == 0)
         {
-            printf("Memory allocation failed. Exiting.\n");
+            printf(COLOR_RED "❌ Memory allocation failed. Exiting.\n" COLOR_RESET);
             return 1;
         }
 
         // Take matrix input from user
-        printf("Enter the Matrix A row by row:\n");
+        printf(COLOR_CYAN "Enter the Matrix row by row:\n" COLOR_RESET);
         for (int i = 0; i < n; i++)
         {
+            printf(COLOR_YELLOW "Row %d" COLOR_RESET ": \n", i + 1);
             for (int j = 0; j < n; j++)
             {
-                printf("Enter the value of a%d%d: ", i + 1, j + 1);
+                printf("a%d%d = ", i + 1, j + 1);
                 scanf("%lf", &m.data[i][j]);
             }
         }
 
+        // Calculate determinant
+        printf(COLOR_YELLOW "\nCalculating determinant...\n" COLOR_RESET);
         double det = calculate_determinant(&m);
-        printf("\nThe determinant of the matrix is: %.6lf\n", det);
+
+        printf("\n" COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
+        printf(COLOR_GREEN COLOR_BOLD "✓ DETERMINANT CALCULATED\n" COLOR_RESET);
+        printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
+        printf(COLOR_GREEN "  det(A) = %.5lf\n" COLOR_RESET, det);
+
+        if (det == 0.0)
+        {
+            printf(COLOR_YELLOW "  ⚠ Matrix is singular (non-invertible)\n" COLOR_RESET);
+        }
+        else
+        {
+            printf(COLOR_GREEN "  ✓ Matrix is non-singular (invertible)\n" COLOR_RESET);
+        }
+        printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
+
         free_matrix(m);
         return 0;
     }
+
+    return 0;
 }
