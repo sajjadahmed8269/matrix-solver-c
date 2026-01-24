@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "matrix.h"
+// Windows-specific headers for terminal control
+#ifdef _WIN32
+#include <windows.h>
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+#endif
 
 // ANSI Color codes
 #define COLOR_GREEN "\033[0;32m"
@@ -11,8 +18,29 @@
 #define COLOR_RESET "\033[0m"
 #define COLOR_BOLD "\033[1m"
 
+void init_terminal()
+{
+#ifdef _WIN32
+    // 1. Enable UTF-8 Support (for the box symbols ╔ ═ ╗)
+    SetConsoleOutputCP(65001);
+
+    // 2. Enable ANSI Escape Sequences (for COLOR_GREEN, COLOR_BOLD, etc.)
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut != INVALID_HANDLE_VALUE)
+    {
+        DWORD dwMode = 0;
+        if (GetConsoleMode(hOut, &dwMode))
+        {
+            dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+            SetConsoleMode(hOut, dwMode);
+        }
+    }
+#endif
+}
+
 int main(void)
 {
+    init_terminal(); // Run the fix first!
     // Greetings & Description
     printf(COLOR_GREEN COLOR_BOLD);
     printf("\n ╔═══════════════════════════════════════════════════════╗\n");
