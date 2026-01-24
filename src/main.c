@@ -164,6 +164,7 @@ int main(void)
             free_matrix(m);
             return 1;
         case UNIQUE_SOLUTION:
+        {
             double *answers = back_substitution(m);
             printf(COLOR_GREEN COLOR_BOLD "%s UNIQUE SOLUTION FOUND\n" COLOR_RESET, SYMBOL_SUCCESS);
             printf(COLOR_BOLD "════════════════════════════════════════\n" COLOR_RESET);
@@ -175,6 +176,7 @@ int main(void)
             free(answers);
             free_matrix(m);
             break;
+        }
         }
 
         return 0;
