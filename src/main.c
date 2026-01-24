@@ -52,5 +52,67 @@ int main(void)
 
     } while (1);
 
-    return 0;
+    // Perform the chosen operation
+    if (choice == 1)
+    {
+        // Solve system of equations
+        printf("\nSolving system of equations...\n");
+        Matrix m = create_augmented_matrix(n);
+        if (m.size == 0)
+        {
+            printf("Memory allocation failed. Exiting.\n");
+            return 1;
+        }
+
+        // Take matrix input from user
+        printf("Enter the Matrix A row by row:\n");
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                printf("Enter the value of a%d%d: ", i + 1, j + 1);
+                scanf("%lf", &m.data[i][j]);
+            }
+        }
+        printf("Enter the constants vector b:\n");
+        for (int i = 0; i < n; i++)
+        {
+            printf("Enter the value of b%d: ", i + 1);
+            scanf("%lf", &m.data[i][n]);
+        }
+
+        // Perform Gauss elimination
+        if (!forward_elimination(&m))
+        {
+            printf("The system has no unique solution (singular matrix).\n");
+            free_matrix(m);
+            return 1;
+        }
+
+        // check solution type
+        int solution_type = check_solutions(m);
+        switch (solution_type)
+        {
+        case INFINITE_SOLUTIONS:
+            printf("The system has infinitely many solutions.\n");
+            free_matrix(m);
+            return 1;
+        case NO_SOLUTION:
+            printf("The system has no solution.\n");
+            free_matrix(m);
+            return 1;
+        case UNIQUE_SOLUTION:
+            double *answers = back_substitution(m);
+            printf("\nThe unique solution is:\n");
+            for (int i = 0; i < n; i++)
+            {
+                printf("x%d = %.6lf\n", i + 1, answers[i]);
+            }
+            free(answers);
+            free_matrix(m);
+            break;
+        }
+
+        return 0;
+    }
 }
