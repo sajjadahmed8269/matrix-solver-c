@@ -9,7 +9,7 @@
 
 *Applying fundamental Computer Science principles to mathematical computation*
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Building](#-building-from-source) • [Documentation](#-documentation)
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) •  [Uninstallation](#️-uninstallation) • [Building](#-building-from-source) • [Documentation](#-documentation)
 
 </div>
 
@@ -125,6 +125,21 @@ The program will guide you through:
 3. **Data Input**: Enter your matrix coefficients and constants
 4. **Results**: View the computed solution or determinant
 
+---
+
+## 🗑️ Uninstallation
+
+If you wish to remove the Matrix Solver from your system:
+
+### 🐧 Linux
+```bash
+curl -sSL https://raw.githubusercontent.com/sajjadahmed8269/matrix-solver-c/main/uninstall.sh | bash
+```
+
+### 🪟 Windows (PowerShell)
+```powershell
+irm https://raw.githubusercontent.com/sajjadahmed8269/matrix-solver-c/main/uninstall.ps1 | iex
+```
 ---
 
 ## 🔨 Building from Source
